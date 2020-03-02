@@ -7,20 +7,20 @@
 
 static void printString(const char* str)
 {
-	while (*str != 0)
-		write(stdout, str++, 1);
+    while (*str != 0)
+        write(stdout, str++, 1);
 }
 
 void printHex(unsigned int num)
 {
-	int a = num / 16;
-	int b = num % 16;
+    int a = num / 16;
+    int b = num % 16;
 
-	char charA = a >= 10 ? ('A' + a - 10) : ('0' + a);
-	char charB = b >= 10 ? ('A' + b - 10) : ('0' + b);
+    char charA = a >= 10 ? ('A' + a - 10) : ('0' + a);
+    char charB = b >= 10 ? ('A' + b - 10) : ('0' + b);
 
-	write(stdout, &charA, 1);
-	write(stdout, &charB, 1);
+    write(stdout, &charA, 1);
+    write(stdout, &charB, 1);
 }
 
 int printf(const char* fmt, ...)
