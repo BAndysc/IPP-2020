@@ -1,0 +1,9 @@
+Skompilowane dnia: __DATE__ __TIME__
+
+#ifdef TITLE
+> Nowy dokument
+#endif
+Długi długi tekst.
+#include "liczby.txt"
+
+Koniec

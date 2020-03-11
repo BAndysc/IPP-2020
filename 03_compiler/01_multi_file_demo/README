@@ -1,0 +1,1 @@
+This is an example that #include is mindless copy-paste. This code will compile, but it doesn't mean you should split project into multiple files this way.

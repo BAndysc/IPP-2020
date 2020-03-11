@@ -8,9 +8,9 @@
  * znacznie ułatwia pisanie kodu oraz jego czytelność
  * Dzięki temu unikamy przekazywania wskażnika do wskaźnika w funkcjach modyfikujących listę
  * bo lista zawsze jest taka sama, a tylko w środku zmieniają się węzły
- * 
+ *
  * ponadto, czytelne jest czy funkcje jako argument biorą Listę czy jeden węzeł
- * 
+ *
  */
 
 typedef struct node
@@ -41,10 +41,10 @@ void fatalError()
 void* safeCalloc(size_t num, size_t size)
 {
     void* ptr = calloc(num, size);
-    
+
     if (!ptr)
         fatalError();
-    
+
     return ptr;
 }
 
@@ -74,11 +74,11 @@ void listPrint(List* list)
 {
     printf("list: ");
     Node* node = list->first;
-    
-    while (node) 
+
+    while (node)
     {
         printf("%d, ", node->data);
-	    node = node->next;
+        node = node->next;
     }
 
     printf("\n");
@@ -98,13 +98,13 @@ int listSumOfOdds(List* list)
 {
     int sum = 0;
     Node* node = list->first;
-    
-    while (node) 
+
+    while (node)
     {
         if (isOdd(node->data))
             sum += node->data;
 
-	    node = node->next;
+        node = node->next;
     }
 
     return sum;
@@ -119,7 +119,7 @@ void freeNode(Node* node)
  *
  * nie jest oczywiste co ta funkcja zwraca
  * stąd komentarz jest całkiem dobrym pomysłem
- * 
+ *
  */
 
 
@@ -131,13 +131,13 @@ Node* removeNode(List* list, Node* node)
 {
     if (node->next)
         node->next->prev = node->prev;
-    
+
     if (node->prev)
         node->prev->next = node->next;
 
     if (list->last == node)
         list->last = node->prev;
-    
+
     if (list->first == node)
         list->first = node->next;
 
@@ -151,19 +151,19 @@ Node* removeNode(List* list, Node* node)
 void removeIf(List* list, bool (*condition)(int))
 {
     Node* node = list->first;
-    
-    while (node) 
+
+    while (node)
     {
         if (condition(node->data))
             node = removeNode(list, node);
         else
-    	    node = node->next;
-    }    
+            node = node->next;
+    }
 }
 
 /*
  * Wskaźnik do funkcji to może być lekki overkill, ale w ładny sposób pozwolił pozbyć
- * się kilku dodatkowych linijek i przede wszsytkim powtarzania kodu 
+ * się kilku dodatkowych linijek i przede wszsytkim powtarzania kodu
  */
 
 void listRemoveOdd(List* list)
@@ -179,15 +179,15 @@ void listRemoveEven(List* list)
 void listFree(List* list)
 {
     Node* node = list->first;
-    
-    while (node) 
+
+    while (node)
     {
         Node* next = node->next;
 
         freeNode(node);
 
         node = next;
-    }    
+    }
 
     list->first = list->last = NULL;
 }
@@ -195,7 +195,7 @@ void listFree(List* list)
 int main()
 {
     List list = createList();
-    
+
     listPrint(&list);
     listInsert(&list, 3);
     listInsert(&list, 2);
@@ -203,13 +203,13 @@ int main()
     listPrint(&list);
 
     printf("suma nieparystych: %d\n", listSumOfOdds(&list));
-    
+
     listRemoveOdd(&list);
     listPrint(&list);
-    
+
     listRemoveEven(&list);
     listPrint(&list);
-    
+
     listFree(&list);
 
     return 0;
