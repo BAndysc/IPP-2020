@@ -2,10 +2,16 @@
  #include <stdlib.h>
 #include <stdbool.h>
 
+struct employee {
+    char* name;
+    int age;
+    int flags;
+};
+
 struct list 
 {
+struct employee* employee;
 struct list*next,*prev;
-int data;
 };
 
 
@@ -15,40 +21,38 @@ return NULL;
 }
 
 // insert
-void inst(struct list** lista,int i)
+void inst(struct list** lista,struct employee* employee)
 {
     int empty = *lista == NULL ? 1 : 0;
 while (*lista != NULL && (**lista).next) lista = &((*(*lista)).next);
-    struct list* node = malloc(sizeof(struct list));
-	node->data = i;     node->next = NULL;
+    struct list* node = malloc(20);
+	node->employee = employee;     node->next = NULL;
     node->prev = *lista;
 	if (*lista)
 	    (*(*lista)).next = node;
     if (empty) *lista = node;
 }
-void print(struct list* lista){
-printf("list: ");
+void printList(struct list* lista){
 while (lista != NULL) {
-    printf("%d, ", (*(lista)).data);
+    printf("name: %s, age: %d, traits: ", (*(lista)).employee->name, (*(lista)).employee->age);
+    if (((*(lista)).employee->flags & 1))
+        printf("intern, ");
+    if (((*(lista)).employee->flags & 2))
+        printf("fulltime, ");
+    if (((*(lista)).employee->flags & 4))
+        printf("manager, ");
 	lista = lista->next;
-}
 printf("\n");
 }
-void sum_o(struct list* lista, int* r){
-    int sum;
-while (lista != NULL) {
-    if ((*(lista)).data % 2 == 1)
-		sum += (*lista).data;
-	lista = lista->next;
-    }
-    *r = sum;
 }
-void removeOdd(struct list** list)
+void remove_no_full_holiday(struct list** list)
 {
     while (list && (*list != NULL) == true)
     {
     bool bShouldDelete = true;
-	if ((*list)->data % 2 == 1)
+    // if age below 20 or is not full time employee, then is not
+    // eligible for full holidays
+	if ((*list)->employee->age <= 20 || ((*list)->employee->flags & 2) == 0)
 			bShouldDelete = true;
 	else    bShouldDelete = false;
     if (bShouldDelete)
@@ -64,27 +68,6 @@ void removeOdd(struct list** list)
 	}
 }
 
-void removeEven(struct list** list)
-{
-	while (list && (*list != NULL) == true)
-	{
-	bool bShouldDelete = true;
-    if ((*list)->data % 2 == 0)
-            bShouldDelete = true;
-    else	bShouldDelete = false;
-    if (bShouldDelete)
-    {
-    	if (((*list)->next) != NULL) ((*list)->next)->prev = ((*list)->prev);
-
-        if (((*list)->prev) != NULL) {
-		    ((*list)->prev)->next = ((*list)->next);
-            list = &(*list)->next;  }
-    	else *list = ((*list)->next);  }
-    else
-        list = &(*list)->next;
-    }
-}
-
 struct list* release(struct list* l)
 {
     while (l != NULL) {
@@ -97,19 +80,26 @@ struct list* release(struct list* l)
 
 int main()
 {
+struct employee* e1 = malloc(sizeof(struct employee));
+e1->name = "Lindsay";
+e1->flags = 6;
+e1->age = 32;
+struct employee* e2 = malloc(sizeof(struct employee));
+e2->name = "Justin";
+e2->flags = 1;
+e2->age = 19;
+struct employee* e3 = malloc(sizeof(struct employee));
+e3->name = "Brian";
+e3->flags = 2;
+e3->age = 28;
 struct list* list = cr();
-print(list);
-inst(&list, 3);
-inst(&list, 2);
-inst(&list, 7);
-print(list);
-int sum;
-sum_o(list, &sum);
-printf("suma nieparystych: %d\n", sum);
-removeOdd(&list);
-print(list);
-removeEven(&list);
-print(list);
+printList(list);
+inst(&list, e1);
+inst(&list, e2);
+inst(&list, e3);
+printList(list);
+remove_no_full_holiday(&list);
+printList(list);
 list = release(list);
 return 0;
 }
