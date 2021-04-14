@@ -1,0 +1,28 @@
+#include <stdio.h>
+
+#define WORD_TYPE_SIGNED 0
+#define WORD_TYPE_UNSIGNED 1
+#define WORD_TYPE_STRING 2
+#define WORD_TYPE_FLOAT 3
+
+typedef struct word {
+    int type;
+    union {
+        char* string;
+        long long signed_int;
+        unsigned long long unsigned_int;
+        float floating_point;
+    } value;
+} Word;
+
+void print(Word* word)
+{
+    if (word->type == WORD_TYPE_SIGNED)
+        printf("%lld", word->value.signed_int);
+    else if (word->type == WORD_TYPE_UNSIGNED)
+        printf("%llu", word->value.unsigned_int);
+    else if (word->type == WORD_TYPE_STRING)
+        printf("%s", word->value.string);
+    else if (word->type == WORD_TYPE_FLOAT)
+        printf("%f", word->value.floating_point);
+}
